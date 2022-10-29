@@ -238,6 +238,7 @@ protected
         puts "~~> ERROR: Something's using port #{port}. Are you already running MailCatcher?"
         puts "==> #{smtp_url}"
         puts "==> #{http_url}"
+        puts $!.to_s
         exit -1
       else
         raise
