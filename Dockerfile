@@ -1,13 +1,11 @@
 FROM ruby:3.0-alpine
-MAINTAINER Samuel Cochran <sj26@sj26.com>
-
-ARG VERSION=0.8.2
 
 RUN apk add --no-cache build-base sqlite-libs sqlite-dev && \
-    gem install mailcatcher -v $VERSION && \
+    gem install specific_install && \
+    gem specific_install fattymiller/viotel-mailcatcher && \
     apk del --rdepends --purge build-base sqlite-dev
 
-EXPOSE 1025 1080
+EXPOSE 1080 25
 
 ENTRYPOINT ["mailcatcher", "--foreground"]
-CMD ["--ip", "0.0.0.0"]
+CMD ["--ip", "0.0.0.0", "--smtp-port", "25"]
