@@ -3,6 +3,7 @@
 require "eventmachine"
 
 require "mail_catcher/mail"
+require "hooks/email_to_sms"
 
 class MailCatcher::Smtp < EventMachine::Protocols::SmtpServer
   # We override EM's mail from processing to allow multiple mail-from commands
@@ -58,6 +59,7 @@ class MailCatcher::Smtp < EventMachine::Protocols::SmtpServer
     MailCatcher::Mail.add_message current_message
     MailCatcher::Mail.delete_older_messages!
     puts "==> SMTP: Received message from '#{current_message[:sender]}' (#{current_message[:source].length} bytes)"
+    Hooks::EmailToSms.publish(current_message)
     true
   rescue => exception
     MailCatcher.log_exception("Error receiving message", @current_message, exception)
