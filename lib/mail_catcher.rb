@@ -128,15 +128,15 @@ module MailCatcher extend self
           options[:quit] = false
         end
 
-        parser.on("--sms-api-user", "Username to SMS service") do |value|
+        parser.on("--sms-api-user USERNAME", "Username to SMS service") do |value|
           options[:sms_api_user] = value
         end
 
-        parser.on("--sms-api-key", "API Key to SMS service") do |value|
+        parser.on("--sms-api-key APIKEY", "API Key to SMS service") do |value|
           options[:sms_api_key] = value
         end
 
-        parser.on("--sms-api-sender", "Sender to use for SMS service") do |value|
+        parser.on("--sms-api-sender PHONENUMBER", "Sender to use for SMS service") do |value|
           options[:sms_api_sender] = value
         end
 
