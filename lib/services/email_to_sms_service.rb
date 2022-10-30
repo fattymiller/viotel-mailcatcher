@@ -2,7 +2,7 @@ require 'mail_catcher/bus'
 require 'net/http'
 require 'uri'
 
-module Hooks::EmailToSms
+module EmailToSmsService
   def publish(message)
     message[:recipients].each do |recipient|
       headers = { 'user' => MailCatcher.options[:sms_api_user], 'Api-Key' => MailCatcher.options[:sms_api_key] }
