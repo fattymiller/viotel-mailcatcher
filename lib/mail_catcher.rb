@@ -128,6 +128,18 @@ module MailCatcher extend self
           options[:quit] = false
         end
 
+        parser.on("--sms-api-user", "Username to SMS service") do |value|
+          options[:sms_api_user] = value
+        end
+
+        parser.on("--sms-api-key", "API Key to SMS service") do |value|
+          options[:sms_api_key] = value
+        end
+
+        parser.on("--sms-api-sender", "Sender to use for SMS service") do |value|
+          options[:sms_api_sender] = value
+        end
+
         unless windows?
           parser.on("-f", "--foreground", "Run in the foreground") do
             options[:daemon] = false

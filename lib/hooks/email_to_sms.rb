@@ -2,16 +2,12 @@ require 'mail_catcher/bus'
 require 'net/http'
 require 'uri'
 
-SMS_API_USER = ENV.fetch('SMS_API_USER')
-SMS_API_KEY = ENV.fetch('SMS_API_KEY')
-SMS_API_SENDER = ENV.fetch('SMS_API_SENDER')
-
 module Hooks::EmailToSms
   def publish(message)
     message[:recipients].each do |recipient|
-      headers = { 'user' => SMS_API_USER, 'Api-Key' => SMS_API_KEY }
+      headers = { 'user' => MailCatcher.options[:sms_api_user], 'Api-Key' => MailCatcher.options[:sms_api_key] }
       body = {
-        'sender' => SMS_API_SENDER,
+        'sender' => MailCatcher.options[:sms_api_sender],
         'to' => recipient,
         'message' => Mail.new(message[:source]).decoded,
         'test' => true
