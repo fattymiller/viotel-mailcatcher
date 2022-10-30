@@ -20,11 +20,24 @@ class EmailToSmsService
         }
 
         puts "Relaying to '#{recipient}'"
-
-        Net::HTTP.post(URI('https://www.5centsms.com.au/api/v4/sms'), body, headers)
-
-        # Net::HTTP.post_form(URI('https://www.5centsms.com.au/api/v4/sms'), body, headers)
+        post_form('https://www.5centsms.com.au/api/v4/sms', body, headers)
       end
     end
+
+    private
+
+      def post_form(url, body, headers)
+        uri = URI(url)
+        http = Net::HTTP.new(uri.host, uri.port)
+        request = Net::HTTP::Post.new(uri.request_uri)
+
+        request.set_form_data(body)
+
+        (headers || {}).each do |key, value|
+          request[key] = value
+        end
+
+        http.request(request)
+      end
   end
 end
