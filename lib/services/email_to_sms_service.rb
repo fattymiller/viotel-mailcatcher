@@ -5,7 +5,9 @@ require 'uri'
 class EmailToSmsService
   class << self
     def publish(message)
-      message[:recipients].each do |recipient|
+      message[:recipients].each do |recipient_email|
+        recipient = recipient_email.split('@')[0].to_s.scan(/\d+/).first
+
         headers = {
           'user' => MailCatcher.options[:sms_api_user],
           'Api-Key' => MailCatcher.options[:sms_api_key],
@@ -20,24 +22,25 @@ class EmailToSmsService
         }
 
         puts "Relaying to '#{recipient}'"
-        post_form('https://www.5centsms.com.au/api/v4/sms', body, headers)
+        post_form(body, headers)
       end
     end
 
     private
 
-      def post_form(url, body, headers)
-        uri = URI(url)
-        http = Net::HTTP.new(uri.host, uri.port)
-        request = Net::HTTP::Post.new(uri.request_uri)
+    def post_form(body, headers)
+      uri = URI('https://www.5centsms.com.au/api/v4/sms')
+      http = Net::HTTP.new(uri.host, 443)
+      http.use_ssl = true
 
-        request.set_form_data(body)
+      request = Net::HTTP::Post.new(uri.request_uri)
+      request.set_form_data(body)
 
-        (headers || {}).each do |key, value|
-          request[key] = value
-        end
-
-        http.request(request)
+      (headers || {}).each do |key, value|
+        request[key] = value
       end
+
+      http.request(request)
+    end
   end
 end
