@@ -10,7 +10,7 @@ class EmailToSmsService
         body = {
           'sender' => MailCatcher.options[:sms_api_sender],
           'to' => recipient,
-          'message' => Mail.new(message[:source]).decoded,
+          'message' => Mail.new(message[:source]).text_part.decoded,
           'test' => true
         }
 
