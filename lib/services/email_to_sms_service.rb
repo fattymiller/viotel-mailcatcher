@@ -25,8 +25,7 @@ class EmailToSmsService
         body = {
           'sender' => MailCatcher.options[:sms_api_sender],
           'to' => recipient,
-          'message' => body_parts[:message],
-          'test' => true
+          'message' => body_parts[:message]
         }
 
         puts "Relaying to '#{recipient}'"
